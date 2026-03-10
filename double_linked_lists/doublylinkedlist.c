@@ -271,6 +271,10 @@ int main()
         }
         printf("enter 1 to repeat and 0 to exit:");
         scanf("%d",&num);
+        if(num != 1)
+        {
+            printf("program ended succesfully!");
+        }
     }
     return 0;
 }
