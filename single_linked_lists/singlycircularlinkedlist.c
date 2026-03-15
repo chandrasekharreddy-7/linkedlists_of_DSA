@@ -35,6 +35,7 @@ struct node *create()
 void display(struct node *head)
 {
     struct node *temp = head;
+    int count = 0;
     if(head == NULL)
     {
         printf("list is empty!");
@@ -46,8 +47,10 @@ void display(struct node *head)
     {
         printf("%d -> ",temp -> data);
         temp = temp -> next;
+        count++;
     }
     printf("back to head!\n");
+    printf("total no of nodes = %d\n",count + 1);
 }
 
 struct node *insertatbeginning(struct node *head)
@@ -85,14 +88,14 @@ struct node *insertatposition(struct node *head,int pos)
     if (pos == 1)
     {
         temp = head;
-    while(temp -> next != head)
-    {
-        temp = temp -> next;
-    }
-    newnode -> next = head;
-    temp -> next = newnode;
-    head = newnode;
-    return head;
+        while(temp -> next != head)
+        {
+            temp = temp -> next;
+        }
+        newnode -> next = head;
+        temp -> next = newnode;
+        head = newnode;
+        return head;
     }
     temp = head;
     int i = 1;
@@ -207,6 +210,72 @@ struct node *deleteend(struct node *head) {
     return head;
 }
 
+struct node *reverse(struct node *head)
+{
+    if(head == NULL || head->next == head)
+        return head;
+    struct node *prev = NULL;
+    struct node *current = head;
+    struct node *nextnode;
+    struct node *last = head;
+    while(last->next != head)
+    {
+        last = last->next;
+    }
+    while(current->next != head)
+    {
+        nextnode = current->next;
+        current->next = prev;
+        prev = current;
+        current = nextnode;
+    }
+    nextnode = current->next;
+    current->next = prev;
+    prev = current;
+    head->next = prev;
+    head = prev;
+    return head;
+}
+
+struct node *search(struct node *head)
+{
+    struct node *temp;
+    if(head == NULL)
+    {
+        printf("List is empty!\n");
+        return head;
+    }
+    int num;
+    printf("enter element to search : ");
+    scanf("%d",&num);
+    temp = head;
+    int pos = 1;
+    int found = 0;
+    while(temp->next != head)
+    {
+        if(temp->data == num)
+        {
+            found = 1;
+            break;
+        }
+        temp = temp->next;
+        pos++;
+    }
+    if(found == 0 && temp->data == num)
+    {
+        found = 1;
+    }
+    if(found == 1)
+    {
+        printf("entered element (%d) found at position %d\n",num,pos);
+    }
+    else
+    {
+        printf("entered element %d not found in the list\n",num);
+    }
+    return head;
+}
+
 int main()
 {
     struct node *head = NULL;
@@ -224,8 +293,10 @@ int main()
         printf("5. deletion at beginning\n");
         printf("6. deletion at position.\n");
         printf("7. delete at end.\n");
+        printf("8. reverse of the list\n");
+        printf("9. search an element\n");
         int choice,pos,pos1;
-        printf("enter your choice (1 - 7):");
+        printf("enter your choice (1 - 9):");
         scanf("%d",&choice);
         switch(choice)
         {
@@ -266,6 +337,14 @@ int main()
             head = deleteend(head);
             printf("list after deleting element at the end\n");
             display(head);
+            break;
+            case 8:
+            head = reverse(head);
+            printf("list after reversing\n");
+            display(head);
+            break;
+            case 9:
+            head = search(head);
             break;
             default:
             printf("please enter correct choice.\n");
